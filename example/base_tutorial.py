@@ -4,8 +4,6 @@ import streamlit as st
 
 from st_configurator import LayoutConfig, PageConfig, PageRenderer
 
-# from st_configurator.placeholder import Placeholder, PlaceholderValue
-
 show_demo_template = LayoutConfig(
     component=st.expander,
     args=("Show Demo",),
@@ -17,20 +15,32 @@ title = LayoutConfig(
     args=("Streamlit Configurator",),
 )
 
+st_congifurator_description = LayoutConfig(
+    component=st.markdown,
+    args=(
+        textwrap.dedent(
+            """
+            The Streamlit Configurator provides a structured approach to building modular and reusable Streamlit components. 
+            By defining a template once, you can effortlessly replicate the same layout across multiple pages.
+            This reduces redundant code, enhances maintainability, and ensures a consistent user experience throughout your application.
+            """
+        ),
+    ),
+)
+
 section_build = LayoutConfig(
     component=st.header,
     args=("How to Use?",),
     kwargs={"divider": True},
 )
 
-st_congifurator_description = LayoutConfig(
+section_build_description = LayoutConfig(
     component=st.markdown,
     args=(
         textwrap.dedent(
             """
-            The Streamlit Configurator provides a structured approach for building modular and reusable Streamlit components. 
-            By defining a template once, you can effortlessly replicate the same layout across multiple pages.
-            This reduces repetitive code, promotes maintainability, and ensures consistent behavior throughout your application.
+            To build a Streamlit application using the Streamlit Configurator, follow these steps:
+            > Step 1. Define a Streamlit element using LayoutConfig.
             """
         ),
     ),
@@ -80,6 +90,7 @@ page_config = PageConfig(
         title,
         st_congifurator_description,
         section_build,
+        section_build_description,
         code_eample,
         show_demo_template.update(children=[segmented_control]),
     ],
