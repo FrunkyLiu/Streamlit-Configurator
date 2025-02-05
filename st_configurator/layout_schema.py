@@ -13,7 +13,7 @@ from typing import (
 )
 
 if TYPE_CHECKING:
-    from placeholder import PlaceholderValue
+    from st_configurator.placeholder import PlaceholderValue
 
 
 @dataclass
@@ -31,6 +31,7 @@ class LayoutConfig:
         self,
         args: Optional[Tuple[Union[PlaceholderValue, Any], ...]] = None,
         kwargs: Optional[Dict[str, Union[PlaceholderValue, Any]]] = None,
+        children: Optional[List["LayoutConfig"]] = None,
         condition: Optional[Union[PlaceholderValue, "LayoutConfig"]] = None,
         result_key: Optional[PlaceholderValue] = None,
     ) -> "LayoutConfig":
@@ -41,6 +42,7 @@ class LayoutConfig:
         - args: If provided, replaces the current 'args' entirely.
         - kwargs: If provided, merges the new items into the current 'kwargs',
         overwriting any conflicting keys.
+        - children: If provided, replaces the current 'children' entirely.
         - condition: If provided, directly replaces the current 'condition'.
         - result_key: If provided, directly replaces the current 'result_key'.
 
@@ -54,6 +56,7 @@ class LayoutConfig:
                 if kwargs is not None
                 else self.kwargs
             ),
+            children=children if children is not None else self.children,
             condition=condition if condition is not None else self.condition,
             result_key=(
                 result_key if result_key is not None else self.result_key
@@ -63,6 +66,6 @@ class LayoutConfig:
 
 @dataclass
 class PageConfig:
-    title: str
-    sidebar: List[LayoutConfig]
+    page_tag: str
     body: List[LayoutConfig]
+    sidebar: List[LayoutConfig] = field(default_factory=list)

@@ -4,7 +4,16 @@ import streamlit as st
 
 
 class PlaceholderValue:
-    def __init__(self, name=None, default=None, invert=False, persist=False):
+    def __init__(self, default=None, invert=False, persist=False, name=None):
+        """Initialize the placeholder.
+        A placeholder represents a widget configuration item, offering basic settings for configuration like default, inversion and persistence.
+        Args:
+            default: Default value for the configuration item. Defaults to None.
+            invert (bool): Whether to invert the value. Defaults to False.
+            persist (bool): Whether to persist the value. Defaults to False.
+            name (str, optional): Custom name for the configuration item. Will be auto-generated if not specified.
+                Defaults to None.
+        """
         self._name = name
         self._default = default
         self.invert = invert

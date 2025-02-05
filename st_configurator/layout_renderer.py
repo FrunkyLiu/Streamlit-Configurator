@@ -10,8 +10,8 @@ from typing import (
 )
 
 import streamlit as st
-from layout_schema import LayoutConfig, PageConfig
-from placeholder import Placeholder, PlaceholderValue
+from st_configurator.layout_schema import LayoutConfig, PageConfig
+from st_configurator.placeholder import Placeholder, PlaceholderValue
 
 
 class PageRenderer:
@@ -100,10 +100,10 @@ class PageRenderer:
         return
 
     def render_page(self, configs: PageConfig) -> None:
-        page_title = configs.title
+        page_tag = configs.page_tag
         sidebar_configs = configs.sidebar
         body_configs = configs.body
-        Placeholder._CURRENT_PAGE.set(page_title)
+        Placeholder._CURRENT_PAGE.set(page_tag)
         if sidebar_configs:
             with st.sidebar:
                 self.render_layout(sidebar_configs)
