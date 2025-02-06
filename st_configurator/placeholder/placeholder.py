@@ -4,32 +4,58 @@ import streamlit as st
 
 
 class PlaceholderValue:
-    def __init__(self, default=None, invert=False, persist=False, name=None):
+    def __init__(
+        self,
+        default=None,
+        invert=False,
+        persist=False,
+        name=None,
+        global_scope=False,
+    ):
         """Initialize the placeholder.
         A placeholder represents a widget configuration item, offering basic settings for configuration like default, inversion and persistence.
         Args:
             default: Default value for the configuration item. Defaults to None.
             invert (bool): Whether to invert the value. Defaults to False.
             persist (bool): Whether to persist the value. Defaults to False.
-            name (str, optional): Custom name for the configuration item. Will be auto-generated if not specified.
-                Defaults to None.
+            name (str, optional): Custom name for the configuration item. Will be auto-generated if not specified. Defaults to None.
+            global_scope (bool): Whether the placeholder is accessible globally across all pages. Defaults to False.
         """
         self._name = name
-        self._default = default
-        self.invert = invert
-        self.persist = persist
+        self._setup(
+            default=default,
+            invert=invert,
+            persist=persist,
+            global_scope=global_scope,
+        )
 
-    def __call__(self, default=None, invert=False, persist=False):
+    def __call__(
+        self, default=None, invert=False, persist=False, global_scope=False
+    ):
+        self._setup(
+            default=default,
+            invert=invert,
+            persist=persist,
+            global_scope=global_scope,
+        )
+        return self
+
+    def _setup(
+        self, default=None, invert=False, persist=False, global_scope=False
+    ):
         self._default = default
         self.invert = invert
         self.persist = persist
-        return self
+        self.global_scope = global_scope
 
     def get_key(self):
         if self._name == "_CURRENT_PAGE":
             return self._name
-        current_page = Placeholder._CURRENT_PAGE.get()
-        return f"{current_page}_{self._name}"
+        if self.global_scope:
+            prefix = "_GLOBAL"
+        else:
+            prefix = Placeholder._CURRENT_PAGE.get()
+        return f"{prefix}_{self._name}"
 
     def __set_name__(self, owner, name):
         self._name = name
@@ -121,6 +147,3 @@ class Placeholder(metaclass=_PlaceholderMeta):
     @classmethod
     def set_attr(cls, name, value):
         setattr(cls, name, value)
-
-
-__all__ = ["Placeholder", "PlaceholderValue"]
