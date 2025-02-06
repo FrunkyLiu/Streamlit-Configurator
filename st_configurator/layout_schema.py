@@ -17,26 +17,26 @@ if TYPE_CHECKING:
 
 
 @dataclass
-class LayoutConfig:
+class ComponentConfig:
     component: Callable
     args: Tuple[Union[PlaceholderValue, Any], ...] = ()
     kwargs: Dict[str, Union[PlaceholderValue, Any]] = field(
         default_factory=dict
     )
-    children: List["LayoutConfig"] = field(default_factory=list)
-    condition: Optional[Union[PlaceholderValue, "LayoutConfig"]] = None
+    children: List["ComponentConfig"] = field(default_factory=list)
+    condition: Optional[Union[PlaceholderValue, "ComponentConfig"]] = None
     result_key: Optional[PlaceholderValue] = None
 
     def update(
         self,
         args: Optional[Tuple[Union[PlaceholderValue, Any], ...]] = None,
         kwargs: Optional[Dict[str, Union[PlaceholderValue, Any]]] = None,
-        children: Optional[List["LayoutConfig"]] = None,
-        condition: Optional[Union[PlaceholderValue, "LayoutConfig"]] = None,
+        children: Optional[List["ComponentConfig"]] = None,
+        condition: Optional[Union[PlaceholderValue, "ComponentConfig"]] = None,
         result_key: Optional[PlaceholderValue] = None,
-    ) -> "LayoutConfig":
+    ) -> "ComponentConfig":
         """
-        Returns a new LayoutConfig with updated fields.
+        Returns a new ComponentConfig with updated fields.
 
         Updates differ per argument:
         - args: If provided, replaces the current 'args' entirely.
@@ -67,5 +67,5 @@ class LayoutConfig:
 @dataclass
 class PageConfig:
     page_tag: str
-    body: List[LayoutConfig]
-    sidebar: List[LayoutConfig] = field(default_factory=list)
+    body: List[ComponentConfig]
+    sidebar: List[ComponentConfig] = field(default_factory=list)
