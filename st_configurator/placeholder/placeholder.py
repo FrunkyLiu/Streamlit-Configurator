@@ -28,6 +28,7 @@ class PlaceholderValue:
             persist=persist,
             global_scope=global_scope,
         )
+        self._override_key = None
 
     def __call__(
         self, default=None, invert=False, persist=False, global_scope=False
@@ -49,6 +50,8 @@ class PlaceholderValue:
         self.global_scope = global_scope
 
     def get_key(self):
+        if self._override_key:
+            return self._override_key
         if self._name == "_CURRENT_PAGE":
             return self._name
         if self.global_scope:
@@ -71,6 +74,10 @@ class PlaceholderValue:
             key = self.get_key()
         session_state = st.session_state.setdefault("_placeholder_values", {})
         session_state[key] = value
+        print(f"Set {key} to {value}")
+
+    def set_streamlit_key(self, key):
+        self._override_key = key
 
     def get(self, *, key=None):
         if key is None:
@@ -141,7 +148,10 @@ class Placeholder(metaclass=_PlaceholderMeta):
         new_args = [_resolve(arg) for arg in obj_args]
         new_kwargs = {k: _resolve(v) for k, v in obj_kwargs.items()}
         if has_key_param and result_key:
-            new_kwargs["key"] = result_key.get_key()
+            if "key" in new_kwargs:
+                result_key.set_streamlit_key(new_kwargs["key"])
+            else:
+                new_kwargs["key"] = result_key.get_key()
         return new_args, new_kwargs
 
     @classmethod
