@@ -74,7 +74,6 @@ class PlaceholderValue:
             key = self.get_key()
         session_state = st.session_state.setdefault("_placeholder_values", {})
         session_state[key] = value
-        print(f"Set {key} to {value}")
 
     def set_streamlit_key(self, key):
         self._override_key = key
