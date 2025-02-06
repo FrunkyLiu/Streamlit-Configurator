@@ -9,7 +9,11 @@ page = st.navigation(
         ],
         "Base Tutorial": [
             st.Page("page/build_base_page.py", title="Build Base Page"),
-        ]
+            st.Page(
+                "page/placeholders_for_interactivity.py",
+                title="Placeholders for Interactivity",
+            ),
+        ],
     },
 )
 
