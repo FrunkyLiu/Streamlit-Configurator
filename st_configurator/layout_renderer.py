@@ -10,7 +10,7 @@ from typing import (
 )
 
 import streamlit as st
-from st_configurator.layout_schema import LayoutConfig, PageConfig
+from st_configurator.layout_schema import ComponentConfig, PageConfig
 from st_configurator.placeholder import Placeholder, PlaceholderValue
 
 
@@ -33,7 +33,7 @@ class PageRenderer:
 
     def _build_component(
         self,
-        config: LayoutConfig,
+        config: ComponentConfig,
     ):
         component = config.component
         args = config.args
@@ -45,7 +45,7 @@ class PageRenderer:
     def __is_context_manager(self, obj) -> bool:
         return hasattr(obj, "__enter__") and hasattr(obj, "__exit__")
 
-    def _handle_objects(self, obj: Any, children: List[LayoutConfig]) -> None:
+    def _handle_objects(self, obj: Any, children: List[ComponentConfig]) -> None:
         if isinstance(obj, (list, tuple)):
             for i, obj in enumerate(obj):
                 if children[i] is not None:
@@ -57,7 +57,7 @@ class PageRenderer:
         else:
             obj(self.render_layout)(children)
 
-    def _children_parser(self, config: LayoutConfig):
+    def _children_parser(self, config: ComponentConfig):
         component = config.component
         args = config.args
         kwargs = config.kwargs
@@ -71,7 +71,7 @@ class PageRenderer:
         self._handle_objects(obj, children)
 
     def _check_condition(
-        self, condition: Union[PlaceholderValue, LayoutConfig, None]
+        self, condition: Union[PlaceholderValue, ComponentConfig, None]
     ) -> bool:
         if condition is None:
             return True
@@ -81,7 +81,7 @@ class PageRenderer:
 
         return self._build_component(condition)
 
-    def render_layout(self, configs: Sequence[LayoutConfig | None]) -> None:
+    def render_layout(self, configs: Sequence[ComponentConfig | None]) -> None:
         for config in configs:
             if config is None:
                 continue
