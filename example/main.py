@@ -13,6 +13,10 @@ page = st.navigation(
                 "page/placeholders_for_interactivity.py",
                 title="Placeholders for Interactivity",
             ),
+            st.Page(
+                "page/controlling_component_rendering_with_conditions.py",
+                title="Controlling Component Rendering with Conditions",
+            ),
         ],
     },
 )
