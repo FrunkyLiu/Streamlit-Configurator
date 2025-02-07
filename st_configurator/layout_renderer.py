@@ -1,8 +1,8 @@
 from typing import (
     Any,
     Callable,
+    ContextManager,
     Iterable,
-    List,
     Mapping,
     Optional,
     Sequence,
@@ -10,6 +10,7 @@ from typing import (
 )
 
 import streamlit as st
+
 from st_configurator.layout_schema import ComponentConfig, PageConfig
 from st_configurator.placeholder import Placeholder, PlaceholderValue
 
@@ -45,17 +46,46 @@ class PageRenderer:
     def __is_context_manager(self, obj) -> bool:
         return hasattr(obj, "__enter__") and hasattr(obj, "__exit__")
 
-    def _handle_objects(self, obj: Any, children: List[ComponentConfig]) -> None:
-        if isinstance(obj, (list, tuple)):
-            for i, obj in enumerate(obj):
-                if children[i] is not None:
-                    with obj:
-                        self.render_layout([children[i]])
-        elif self.__is_context_manager(obj):
-            with obj:
-                self.render_layout(children)
+    def _handle_context_manager(
+        self, obj: ContextManager, children: Sequence[ComponentConfig | None]
+    ) -> None:
+        with obj:
+            self.render_layout(children)
+
+    def _handle_decorator(
+        self, obj: Callable[..., Callable], children: Sequence[ComponentConfig]
+    ) -> None:
+        decorated_render = obj(self.render_layout)
+        decorated_render(children)
+
+    def _handle_single_children(
+        self, obj: ContextManager, children: Sequence[ComponentConfig | None]
+    ) -> None:
+        self._handle_context_manager(obj, children)
+
+    def _handle_nested_children(
+        self,
+        obj: Sequence[ContextManager],
+        children: Sequence[Sequence[ComponentConfig | None]],
+    ) -> None:
+        transposed_children = list(map(list, zip(*children)))
+        for i, obj_item in enumerate(obj):
+            self._handle_context_manager(obj_item, transposed_children[i])
+
+    def _handle_children(
+        self,
+        obj: Any,
+        children: Sequence,
+    ) -> None:
+        if isinstance(children, (list, tuple)) and isinstance(
+            children[0], (list, tuple)
+        ):
+            self._handle_nested_children(obj, children)
         else:
-            obj(self.render_layout)(children)
+            if self.__is_context_manager(obj):
+                self._handle_single_children(obj, children)
+            else:
+                self._handle_decorator(obj, children)
 
     def _children_parser(self, config: ComponentConfig):
         component = config.component
@@ -68,7 +98,7 @@ class PageRenderer:
         if not obj or not children:
             return
 
-        self._handle_objects(obj, children)
+        self._handle_children(obj, children)
 
     def _check_condition(
         self, condition: Union[PlaceholderValue, ComponentConfig, None]

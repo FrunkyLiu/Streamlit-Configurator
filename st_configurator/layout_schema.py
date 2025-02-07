@@ -8,6 +8,7 @@ from typing import (
     Dict,
     List,
     Optional,
+    Sequence,
     Tuple,
     Union,
 )
@@ -23,7 +24,13 @@ class ComponentConfig:
     kwargs: Dict[str, Union[PlaceholderValue, Any]] = field(
         default_factory=dict
     )
-    children: List["ComponentConfig"] = field(default_factory=list)
+    children: Optional[
+        Sequence[
+            Union[
+                "ComponentConfig", Sequence[Optional["ComponentConfig"]], None
+            ]
+        ]
+    ] = field(default_factory=list)
     condition: Optional[Union[PlaceholderValue, "ComponentConfig"]] = None
     result_key: Optional[PlaceholderValue] = None
 
