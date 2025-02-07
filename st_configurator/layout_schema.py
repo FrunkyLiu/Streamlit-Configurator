@@ -25,11 +25,15 @@ class ComponentConfig:
         default_factory=dict
     )
     children: Optional[
+<<<<<<< HEAD
         Sequence[
             Union[
                 "ComponentConfig", Sequence[Optional["ComponentConfig"]], None
             ]
         ]
+=======
+        List[Union["ComponentConfig", List["ComponentConfig"], None]]
+>>>>>>> 873bc5a (Refactor layout rendering logic to support context managers and improve handling of component children)
     ] = field(default_factory=list)
     condition: Optional[Union[PlaceholderValue, "ComponentConfig"]] = None
     result_key: Optional[PlaceholderValue] = None

@@ -82,16 +82,13 @@ class PageRenderer:
         ):
             self._handle_nested_children(obj, children)
         else:
-            if self.__is_context_manager(obj):
-                self._handle_single_children(obj, children)
-            else:
-                self._handle_decorator(obj, children)
+            obj(self.render_layout)(children)
 
     def _children_parser(self, config: ComponentConfig):
         component = config.component
         args = config.args
         kwargs = config.kwargs
-        children = config.children
+        children: Sequence | Sequence[Sequence] | None = config.children
 
         obj = component(*args, **kwargs)
 
