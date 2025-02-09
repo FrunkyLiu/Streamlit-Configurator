@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="Streamlit Configurator!!!")
+st.set_page_config(page_title="Streamlit Configurator")
 
 page = st.navigation(
     {

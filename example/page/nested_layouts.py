@@ -50,34 +50,34 @@ section_build_description = description_template.update(
             from st_configurator import ComponentConfig
 
             # Define components for the layout
-            name_input = ComponentConfig(
-                component=st.text_input,
-                kwargs={"label": "Enter your name"},
+            area_1 = ComponentConfig(
+                component=st.code,
+                args=("Area 1", None),
             )
 
-            submit_button = ComponentConfig(
-                component=st.button,
-                kwargs={"label": "Submit", "use_container_width": True},
+            area_2 = ComponentConfig(
+                component=st.code,
+                args=("Area 2", None),
             )
 
-            terms_checkbox = ComponentConfig(
-                component=st.checkbox,
-                kwargs={"label": "Accept Terms"},
+            area_3 = ComponentConfig(
+                component=st.code,
+                args=("Area 3", None),
             )
 
-            comments_textarea = ComponentConfig(
-                component=st.text_area,
-                kwargs={"label": "Additional Comments"},
+            area_4 = ComponentConfig(
+                component=st.code,
+                args=("Area 4", None),
             )
 
-            option_radio = ComponentConfig(
-                component=st.radio,
-                args=("Choose an option", ["Option A", "Option B", "Option C"]),
+            area_5 = ComponentConfig(
+                component=st.code,
+                args=("Area 5", None),
             )
 
-            age_slider = ComponentConfig(
-                component=st.slider,
-                args=("Set your age", 18, 100),
+            area_6 = ComponentConfig(
+                component=st.code,
+                args=("Area 6", None),
             )
 
             # Create a multi-row layout using nested lists.
@@ -85,12 +85,12 @@ section_build_description = description_template.update(
             multi_row_layout = ComponentConfig(
                 component=st.columns,
                 args=(3,),  # 3 columns per row
-                kwargs={"vertical_alignment": "center", "border": True},
+                kwargs={"vertical_alignment": "center"},
                 children=[
                     # First row
-                    [name_input, submit_button, terms_checkbox],
+                    [area_1, area_2, area_3],
                     # Second row
-                    [comments_textarea, option_radio, age_slider],
+                    [area_4, area_5, area_6],
                 ],
             )
             ```
@@ -100,48 +100,22 @@ section_build_description = description_template.update(
 )
 
 
-# Define components for the layout
-name_input = ComponentConfig(
-    component=st.text_input,
-    kwargs={"label": "Enter your name"},
-)
-
-submit_button = ComponentConfig(
-    component=st.button,
-    kwargs={"label": "Submit", "use_container_width": True},
-)
-
-terms_checkbox = ComponentConfig(
-    component=st.checkbox,
-    kwargs={"label": "Accept Terms"},
-)
-
-comments_textarea = ComponentConfig(
-    component=st.text_area,
-    kwargs={"label": "Additional Comments"},
-)
-
-option_radio = ComponentConfig(
-    component=st.radio,
-    args=("Choose an option", ["Option A", "Option B", "Option C"]),
-)
-
-age_slider = ComponentConfig(
-    component=st.slider,
-    args=("Set your age", 18, 100),
-)
+areas = [
+    ComponentConfig(component=st.code, args=(f"Area {i}", None))
+    for i in range(1, 7)
+]
 
 # Create a multi-row layout using nested lists.
 # Here, we use st.columns as an example of a container that supports children.
 multi_row_layout = ComponentConfig(
     component=st.columns,
     args=(3,),  # 3 columns per row
-    kwargs={"vertical_alignment": "top", "border": True},
+    kwargs={"vertical_alignment": "center"},
     children=[
         # First row
-        [name_input, submit_button, terms_checkbox],
+        [*areas[:3]],
         # Second row
-        [comments_textarea, option_radio, age_slider],
+        [*areas[3:]],
     ],
 )
 
@@ -161,7 +135,7 @@ section_none_description = description_template.update(
                 args=(3,),
                 kwargs={"vertical_alignment": "center"},
                 children=[
-                    [name_input, None, terms_checkbox],
+                    [area_1, None, area_3],
                 ],
             )
             ```
@@ -178,11 +152,115 @@ multi_row_layout_with_gap = ComponentConfig(
     args=(3,),  # 3 columns per row
     kwargs={"vertical_alignment": "center"},
     children=[
-        name_input.update(kwargs={"key": "name_input"}),
+        areas[0],
         None,
-        terms_checkbox.update(kwargs={"key": "terms_checkbox"}),
+        areas[2],
     ],
 )
+
+section_none_warning_description = ComponentConfig(
+    component=st.info,
+    args=(
+        """
+        ##### Note
+        When you insert a `None` value in the `children` list (to leave a column empty), 
+        the actual layout adjustment depends on the `vertical_alignment` setting of the container. For example:
+
+        - **vertical_alignment="top"**:
+
+            Components in the same row may shift upward to fill the gap created by None. That is, the empty space might be effectively "filled" by aligning the content in adjacent cells toward the top.
+
+        - **vertical_alignment="bottom"**:
+
+            The empty column remains empty, and no upward shift occurs—the components retain their original positions.
+
+        - **vertical_alignment="center"**:
+
+            Components are centered vertically relative to the row, preserving the gap as a balanced empty space.
+
+        Be sure to choose the appropriate vertical_alignment value for your layout design, as it directly influences how gaps (created by None) affect the overall appearance of your multi-column arrangement.
+        
+        
+        Example:
+
+        ```python
+        # Layout with an intentionally empty middle column in the first row
+        layout_with_gap = ComponentConfig(
+            component=st.columns,
+            args=(3,),
+            kwargs={"vertical_alignment": "center"},
+            children=[
+                [area_1, None, area_3],
+                [area_4, area_5, area_6],
+            ],
+        )
+        ```
+        """,
+    ),
+)
+
+warning_layout_example_config = ComponentConfig(
+    component=st.columns,
+    args=(3,),  # 3 columns per row
+    kwargs={"vertical_alignment": "center"},
+    children=[
+        [areas[0], None, areas[2]],
+        [*areas[3:]],
+    ],
+)
+
+section_dialog_description = description_template.update(
+    args=(
+        textwrap.dedent(
+            """
+            ### Using Children with Decorator (e.g. @st.dialog)
+            The children mechanism can also be applied to decorators that wrap or enhance components. 
+            For instance, if you use a decorator such as `@st.dialog` (or a similar decorator) to create a dialog, 
+            you can declare its nested content using the same children approach.
+
+            This means you can define the content that should appear inside the dialog by including it in the `children` attribute of your `ComponentConfig`. 
+            This makes it easy to manage and reuse complex UI elements, even when they’re enhanced by decorators.
+
+            Example:
+            ```python
+            dialog_config = ComponentConfig(
+                condition=ComponentConfig(
+                    component=st.button,
+                    args=("Show Dialog",),
+                    kwargs={"type": "primary", "use_container_width": True},
+                ),
+                component=st.dialog,
+                args=("Dialog Title",),
+                children=[
+                    ComponentConfig(
+                        component=st.write,
+                        args=("This is the content of the dialog.",),
+                    )
+                ],
+            )
+            ```
+            """
+        ),
+    ),
+)
+
+
+dialog_config = ComponentConfig(
+    condition=ComponentConfig(
+        component=st.button,
+        args=("Show Dialog",),
+        kwargs={"type": "primary", "use_container_width": True},
+    ),
+    component=st.dialog,
+    args=("Dialog Title",),
+    children=[
+        ComponentConfig(
+            component=st.write,
+            args=("This is the content of the dialog.",),
+        )
+    ],
+)
+
 
 # Warning: When using `st.columns`, a `None` value will cause Streamlit to automatically shift subsequent components upward within that row.
 divider = ComponentConfig(component=st.divider)
@@ -196,6 +274,11 @@ page_config = PageConfig(
         divider,
         section_none_description,
         show_demo_template.update(children=[multi_row_layout_with_gap]),
+        section_none_warning_description,
+        show_demo_template.update(children=[warning_layout_example_config]),
+        divider,
+        section_dialog_description,
+        show_demo_template.update(children=[dialog_config]),
     ],
 )
 
