@@ -77,18 +77,24 @@ class PageRenderer:
         obj: Any,
         children: Sequence,
     ) -> None:
-        if isinstance(children, (list, tuple)) and isinstance(
+        if children and isinstance(
             children[0], (list, tuple)
         ):
             self._handle_nested_children(obj, children)
         else:
-            obj(self.render_layout)(children)
+            if isinstance(obj, (list, tuple)):
+                for i, obj_item in enumerate(obj):
+                    self._handle_context_manager(obj_item, [children[i]])
+            elif self.__is_context_manager(obj):
+                self._handle_single_children(obj, children)
+            else:
+                self._handle_decorator(obj, children)
 
     def _children_parser(self, config: ComponentConfig):
         component = config.component
         args = config.args
         kwargs = config.kwargs
-        children: Sequence | Sequence[Sequence] | None = config.children
+        children = config.children
 
         obj = component(*args, **kwargs)
 
