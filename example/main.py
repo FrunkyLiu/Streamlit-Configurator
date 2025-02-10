@@ -22,7 +22,13 @@ page = st.navigation(
                 title="Nested Layouts",
             ),
         ],
-    },
+        "Advanced Tutorial": [
+            st.Page(
+                "page/persistent_state.py",
+                title="Persistent State",
+            ),
+        ]
+    },  
 )
 
 page.run()
