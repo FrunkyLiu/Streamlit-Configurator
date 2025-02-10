@@ -35,7 +35,11 @@ section_build_description = description_template.update(
             This page demonstrates how to control component rendering using conditions. 
             With conditions, a component is executed only when a specified condition evaluates to True. 
             You can either use a placeholder or a component config directly as the condition. 
-            In addition, you can invert the logic or make the condition state persist across page refreshes.
+            Additionally, you can customize how the condition’s value is interpreted by 
+            providing a callable function via the format_fn parameter. 
+            This mechanism not only allows you to invert the logic (by, for example, converting the value to its opposite boolean) 
+            but also supports a broader range of use cases for value transformation, 
+            including maintaining condition state across page refreshes.
 
             ### Using a Placeholder as a Condition
             First, create a switch component that sets a placeholder value:
@@ -77,15 +81,20 @@ section_invert_description = description_template.update(
     args=(
         textwrap.dedent(
             """
-            ### Inverting the Condition
-            If you need the reverse logic (i.e. render the component when the condition is NOT met), you can invert the condition as follows:
+            ### Transforming the Placeholder's Value with `format_fn`
+            If you need to adjust the logic for rendering a component 
+            (for instance, to invert the condition), you can provide a 
+            callable function via the `format_fn` parameter. For example, 
+            to render the text area when the switch is not activated:
             ```python
             text_area = ComponentConfig(
-                condition=MyPlaceholder.TEXT_AREA_SWITCH(invert=True),
+                condition=MyPlaceholder.TEXT_AREA_SWITCH(format_fn=lambda x: not bool(x)),
                 component=st.text_area,
                 args=("Enter some text here",),
             )
             ```
+            In this example, the lambda function converts the original value to a boolean and then inverts it, 
+            effectively reversing the condition logic.
             """
         ),
     ),
@@ -129,7 +138,9 @@ text_area_switch_invert = ComponentConfig(
 )
 
 text_area_invert = ComponentConfig(
-    condition=MyPlaceholder.CLOSE_TEXT_AREA_SWITCH(invert=True),
+    condition=MyPlaceholder.CLOSE_TEXT_AREA_SWITCH(
+        format_fn=lambda x: not bool(x)
+    ),
     component=st.text_area,
     args=("Enter some text here (invert)",),
 )
