@@ -27,6 +27,10 @@ page = st.navigation(
                 "page/persistent_state.py",
                 title="Persistent State",
             ),
+            st.Page(
+                "page/flexible_integration.py",
+                title="Flexible Integration",
+            ),
         ]
     },  
 )
