@@ -1,4 +1,5 @@
 import inspect
+from typing import Callable, Optional
 
 import streamlit as st
 
@@ -7,47 +8,55 @@ class PlaceholderValue:
     def __init__(
         self,
         default=None,
-        invert=False,
         persist=False,
         name=None,
         global_scope=False,
+        format_fn: Optional[Callable] = None,
     ):
         """Initialize the placeholder.
         A placeholder represents a widget configuration item, offering basic settings for configuration like default, inversion and persistence.
         Args:
             default: Default value for the configuration item. Defaults to None.
-            invert (bool): Whether to invert the value. Defaults to False.
             persist (bool): Whether to persist the value. Defaults to False.
             name (str, optional): Custom name for the configuration item. Will be auto-generated if not specified. Defaults to None.
             global_scope (bool): Whether the placeholder is accessible globally across all pages. Defaults to False.
+            format_fn (Callable, optional): Function to format the value. Defaults to None.
         """
         self._name = name
         self._setup(
             default=default,
-            invert=invert,
             persist=persist,
             global_scope=global_scope,
+            format_fn=format_fn,
         )
         self._override_key = None
 
     def __call__(
-        self, default=None, invert=False, persist=False, global_scope=False
+        self,
+        default=None,
+        persist=False,
+        global_scope=False,
+        format_fn: Optional[Callable] = None,
     ):
         self._setup(
             default=default,
-            invert=invert,
             persist=persist,
             global_scope=global_scope,
+            format_fn=format_fn,
         )
         return self
 
     def _setup(
-        self, default=None, invert=False, persist=False, global_scope=False
+        self,
+        default=None,
+        persist=False,
+        global_scope=False,
+        format_fn=None,
     ):
         self._default = default
-        self.invert = invert
         self.persist = persist
         self.global_scope = global_scope
+        self.format_fn = format_fn
 
     def get_key(self):
         if self._override_key:
@@ -99,8 +108,8 @@ class PlaceholderValue:
             elif "last" in key_data:
                 val = key_data["last"]
 
-        if self.invert:
-            val = not bool(val)
+        if self.format_fn:
+            val = self.format_fn(val)
         return val
 
     def __repr__(self):
