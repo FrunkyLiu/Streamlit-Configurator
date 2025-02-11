@@ -77,9 +77,7 @@ class PageRenderer:
         obj: Any,
         children: Sequence,
     ) -> None:
-        if children and isinstance(
-            children[0], (list, tuple)
-        ):
+        if children and isinstance(children[0], (list, tuple)):
             self._handle_nested_children(obj, children)
         else:
             if isinstance(obj, (list, tuple)):

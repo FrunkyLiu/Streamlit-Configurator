@@ -12,30 +12,50 @@ from share_component import description_template, title_template
 from st_configurator import ComponentConfig, PageConfig, PageRenderer
 
 title = title_template.update(
-    args=(":page_with_curl: Streamlit Configurator",),
+    args=("📃 Streamlit Configurator",),
 )
 
 st_congifurator_info = description_template.update(
     args=(
         textwrap.dedent(
             """
-            Streamlit Configurator provides a structured approach to building modular and reusable Streamlit components. By defining a template once, you can effortlessly replicate the same layout across multiple pages, reducing redundant code and enhancing maintainability.
+            Streamlit Configurator provides a structured approach to building modular 
+            and reusable Streamlit components. By defining a template once, you can 
+            effortlessly replicate the same layout across multiple pages—reducing 
+            redundant code, ensuring consistent behavior, and enhancing maintainability.
 
             
             **Key Benefits:**
 
             
              - **Reusable Components🔄**:
-            > Each instance of `ComponentConfig` can be reused throughout your application, making it easy to maintain a consistent layout and behavior across different pages.
+            
+                Each instance of `ComponentConfig` can be reused throughout 
+                your application, making it easy to maintain a consistent 
+                layout and behavior across different pages.
 
-             - **Flexible Parameter Passing🔗**:
-            > The built-in Placeholder mechanism allows you to pass parameters seamlessly between components. This means you can share data (such as user inputs or computed values) across different parts of your configuration without worrying about data inconsistencies.
+             - **Flexible Parameter Passing & Robust State Management🔗**:
 
-             - **Robust Against Streamlit Updates🕹️**:
-            > By leveraging the Placeholder mechanism, Streamlit Configurator minimizes the risk of errors that may arise from changes in Streamlit’s update process. This helps ensure that your application reads and manages values correctly, even as underlying components evolve.
+                The built-in Placeholder mechanism allows you to pass parameters 
+                seamlessly between components while maintaining stable 
+                state—even across page switches. This means you can share data 
+                (such as user inputs or computed values) across various parts 
+                of your configuration without worrying about inconsistencies 
+                or loss of state.
 
-            Overall, Streamlit Configurator streamlines the development process, enhances code reusability, and provides a robust foundation for building consistent, interactive, and modular Streamlit applications.
+             - **Compatibility & Resilience Against Updates 🛡️**:
 
+                By leveraging the Placeholder mechanism, Streamlit Configurator 
+                minimizes the risk of errors arising from changes in Streamlit's 
+                update process. It also integrates harmoniously with native 
+                Streamlit coding patterns, ensuring that your application 
+                consistently reads and manages values correctly as underlying 
+                components evolve.
+            
+            Overall, Streamlit Configurator streamlines the development process, 
+            enhances code reusability, and provides a robust, flexible 
+            foundation for building consistent, interactive, and modular 
+            Streamlit applications.
 
             """
         ),

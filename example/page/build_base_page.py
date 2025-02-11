@@ -65,9 +65,6 @@ section_build_description_base = description_template.update(
             - args and kwargs are used to pass parameters to the callable.
             - page_tag helps to identify or differentiate the page.
             - body is a list of ComponentConfig instances that are rendered in order to create the Streamlit elements on the page.
-
-            
-            More information, please refer to the [README.md]()
             """
         ),
     ),

@@ -16,7 +16,6 @@ from share_component import (
 from st_configurator import ComponentConfig, PageConfig, PageRenderer
 from st_configurator.placeholder import Placeholder, PlaceholderValue
 
-
 title = title_template.update(
     args=("🔄 Flexible Integration & Compatibility",),
 )
@@ -204,7 +203,7 @@ description_config = description_template.update(
             development while still benefiting from st_configurator's robust 
             state management through placeholders.
             """
-        ), 
+        ),
     )
 )
 
@@ -274,8 +273,10 @@ page_config = PageConfig(
     body=[
         title,
         description_config,
-        show_demo_template.update(children=[chatbot_config, chat_input_config]),
-        second_description_config
+        show_demo_template.update(
+            children=[chatbot_config, chat_input_config]
+        ),
+        second_description_config,
     ],
 )
 

@@ -143,9 +143,7 @@ display_segmented_control = ComponentConfig(
     args=(MyPlaceholder.SC_RESULT,),
 )
 
-divider = ComponentConfig(
-    component=st.divider
-)
+divider = ComponentConfig(component=st.divider)
 
 # Define the page configuration
 page_config = PageConfig(
@@ -160,7 +158,7 @@ page_config = PageConfig(
             ]
         ),
         divider,
-        section_additional_information
+        section_additional_information,
     ],
 )
 
