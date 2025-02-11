@@ -31,6 +31,10 @@ page = st.navigation(
                 "page/flexible_integration.py",
                 title="Flexible Integration",
             ),
+            st.Page(
+                "page/manual_placeholders.py",
+                title="Manual Placeholders",
+            ),
         ]
     },  
 )
