@@ -35,6 +35,12 @@ page = st.navigation(
                 "page/manual_placeholders.py",
                 title="Manual Placeholders",
             ),
+        ],
+        "API Reference": [
+            st.Page(
+                "page/placeholder_api.py",
+                title="Placeholder API",
+            ),
         ]
     },  
 )
