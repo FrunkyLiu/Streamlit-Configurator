@@ -102,30 +102,10 @@ description_config = description_template.update(
     ),
 )
 
-note_config = ComponentConfig(
-    component=st.info,
-    args=(
-        textwrap.dedent(
-            """
-            ##### Note:
-            Placeholders use the current page's ***`page_tag`*** as a key prefix. 
-            This allows the same placeholder name to be reused across 
-            different pages without interfering with each other. 
-            However, if you define multiple Placeholder classes with the same 
-            attribute name (e.g., ***`MyPlaceholder.VALUE`*** and ***`MyPlaceholder2.VALUE`***)
-            , they will resolve to the same underlying value on the same page 
-            (i.e. ***`MyPlaceholder.VALUE.get() == MyPlaceholder2.VALUE.get()`***). 
-            Therefore, it is recommended to consolidate your placeholders into 
-            a single class to avoid confusion.
-            """
-        ),
-    ),
-)
-
 
 page_config = PageConfig(
     page_tag="Main Page",
-    body=[title, description_config, note_config],
+    body=[title, description_config],
 )
 
 PageRenderer().render_page(page_config)
