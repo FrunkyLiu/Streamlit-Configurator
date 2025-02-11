@@ -94,8 +94,7 @@ description_config = description_template.update(
                 body=[name_input_config],   # Main content components
                 sidebar=[updated_name_input_config] # Sidebar components
             )
-            ```
-            ***
+            ``` 
             """
         ),
         True,
