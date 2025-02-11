@@ -15,7 +15,7 @@ title = title_template.update(
     args=("Placeholder API 📝",),
 )
 
-st_congifurator_info = description_template.update(
+description_config = description_template.update(
     args=(
         textwrap.dedent(
             """
@@ -49,6 +49,8 @@ st_congifurator_info = description_template.update(
                 
                 ###### Example:
                 ```python
+                from st_configurator.placeholder import Placeholder, PlaceholderValue
+
                 class MyPlaceholder(Placeholder):
                     VALUE = PlaceholderValue(default=10)
 
@@ -73,6 +75,8 @@ st_congifurator_info = description_template.update(
 
                 ###### Example:
                 ```python
+                from st_configurator.placeholder import Placeholder, PlaceholderValue
+
                 class MyPlaceholder(Placeholder):
                     NUMBER = PlaceholderValue(default=10)
 
@@ -142,6 +146,8 @@ st_congifurator_info = description_template.update(
 
             #### Example:
             ```python
+            from st_configurator.placeholder import PlaceholderValue
+
             # Create a placeholder for a counter with a default of 0.
             counter = PlaceholderValue(default=0, global_scope=True)
             counter.set(5)
@@ -177,7 +183,7 @@ note_config = ComponentConfig(
 
 page_config = PageConfig(
     page_tag="Main Page",
-    body=[title, st_congifurator_info, note_config],
+    body=[title, description_config, note_config],
 )
 
 PageRenderer().render_page(page_config)

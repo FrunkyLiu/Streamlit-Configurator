@@ -41,6 +41,10 @@ page = st.navigation(
                 "page/placeholder_api.py",
                 title="Placeholder API",
             ),
+            st.Page(
+                "page/component_page_config_api.py",
+                title="Component and Page Config API",
+            ),
         ]
     },  
 )
