@@ -180,10 +180,35 @@ note_config = ComponentConfig(
     ),
 )
 
+note_class_config = ComponentConfig(
+    component=st.info,
+    args=(
+        textwrap.dedent(
+            """
+            ##### Note:
+            Because the attributes in a ***`Placeholder`*** class are defined at the 
+            class level, any call to update a placeholder—using the ***`__call__`***
+            method—applies globally. That is, if you set:
+            ```python
+            MyPlaceholder.VALUE = PlaceholderValue(default=0)
+            ```
+            and later call:
+            ```python
+            MyPlaceholder.VALUE(global_scope=True)
+            ```
+            the previous default value (***`0`***) will be overridden (resulting in 
+            the default becoming ***`None`*** if not explicitly set again). Be 
+            cautious when updating placeholder settings, as they affect 
+            all references to that attribute globally.
+            """
+        ),
+    ),
+)
+
 
 page_config = PageConfig(
     page_tag="Main Page",
-    body=[title, description_config, note_config],
+    body=[title, description_config, note_config, note_class_config],
 )
 
 PageRenderer().render_page(page_config)
