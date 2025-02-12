@@ -12,51 +12,51 @@ from share_component import description_template, title_template
 from st_configurator import ComponentConfig, PageConfig, PageRenderer
 
 title = title_template.update(
-    args=("📃 Streamlit Configurator",),
+    args=("✨ Streamlit Configurator",),
 )
 
 st_congifurator_info = description_template.update(
     args=(
         textwrap.dedent(
             """
-            Streamlit Configurator provides a structured approach to building modular 
-            and reusable Streamlit components. By defining a template once, you can 
-            effortlessly replicate the same layout across multiple pages—reducing 
-            redundant code, ensuring consistent behavior, and enhancing maintainability.
+            ### Overview
+            **Streamlit Configurator** provides a structured, declarative 
+            approach to building and reusing Streamlit components. By defining 
+            layout and behavior once, you can consistently apply the same 
+            patterns across multiple pages—minimizing repetitive code and 
+            reducing maintenance overhead.
 
-            
-            **Key Benefits:**
+            ---
 
-            
-             - **Reusable Components🔄**:
-            
-                Each instance of `ComponentConfig` can be reused throughout 
-                your application, making it easy to maintain a consistent 
-                layout and behavior across different pages.
+            ### Key Benefits
 
-             - **Flexible Parameter Passing & Robust State Management🔗**:
+            - **Reusable Components 🔄**  
+                
+                Define a `ComponentConfig` once and leverage it 
+                everywhere—ensuring consistent layout, logic, and styling 
+                throughout your Streamlit app.
 
-                The built-in Placeholder mechanism allows you to pass parameters 
-                seamlessly between components while maintaining stable 
-                state—even across page switches. This means you can share data 
-                (such as user inputs or computed values) across various parts 
-                of your configuration without worrying about inconsistencies 
-                or loss of state.
+            - **Flexible Parameter Passing & Robust State Management 🔗**  
+                
+                Built-in **placeholders** allow for seamless sharing of 
+                parameters across components, preserving their values even 
+                when switching pages. This ensures stability and consistency, 
+                without relying on fragile, key-based state references.
 
-             - **Compatibility & Resilience Against Updates 🛡️**:
+            - **Compatibility & Resilience 🛡️**  
+                
+                The placeholder mechanism coexists smoothly with standard 
+                Streamlit usage. It safeguards against unexpected re-runs or 
+                version updates by maintaining a reliable reference to state, 
+                preventing data loss and streamlining user interactions.
 
-                By leveraging the Placeholder mechanism, Streamlit Configurator 
-                minimizes the risk of errors arising from changes in Streamlit's 
-                update process. It also integrates harmoniously with native 
-                Streamlit coding patterns, ensuring that your application 
-                consistently reads and manages values correctly as underlying 
-                components evolve.
-            
-            Overall, Streamlit Configurator streamlines the development process, 
-            enhances code reusability, and provides a robust, flexible 
-            foundation for building consistent, interactive, and modular 
-            Streamlit applications.
+            By combining declarative layouts, dynamic placeholders, and straightforward integrations, **Streamlit Configurator** lays the foundation for building **interactive, modular, and maintainable** Streamlit applications.
 
+            ---
+
+            ### Contact & GitHub
+            - **📭 Email**: [x77497856@gmail.com](mailto:x77497856@gmail.com)  
+            - **👍 GitHub**: [https://github.com/FrunkyLiu/Streamlit-Configurator](https://github.com/FrunkyLiu/Streamlit-Configurator)
             """
         ),
     ),
