@@ -1,15 +1,23 @@
-from setuptools import find_packages, setup
+import os
+from setuptools import setup, find_packages
 
-# with open("README.md", encoding="utf-8") as f:
-#     long_description = f.read()
+# Read the contents of your README file for a long description (optional).
+# If you don't have a README or don't want to include a long description,
+# you can omit these lines or use a simple string.
+this_directory = os.path.abspath(os.path.dirname(__file__))
+try:
+    with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
+        long_description = f.read()
+except FileNotFoundError:
+    long_description = ""
 
 setup(
     name="st-configurator",
     version="0.1.0",
     author="Frunky Liu",
     author_email="x77497856@gmail.com",
-    description="快速且可重複利用的 Streamlit UI 建構工具",
-    # long_description=long_description,
+    description="A declarative and modular approach to building Streamlit apps",
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/FrunkyLiu/Streamlit-Configurator",
     packages=find_packages(),

@@ -77,12 +77,13 @@ class PageRenderer:
         obj: Any,
         children: Sequence,
     ) -> None:
-        if isinstance(children, (list, tuple)) and isinstance(
-            children[0], (list, tuple)
-        ):
+        if children and isinstance(children[0], (list, tuple)):
             self._handle_nested_children(obj, children)
         else:
-            if self.__is_context_manager(obj):
+            if isinstance(obj, (list, tuple)):
+                for i, obj_item in enumerate(obj):
+                    self._handle_context_manager(obj_item, [children[i]])
+            elif self.__is_context_manager(obj):
                 self._handle_single_children(obj, children)
             else:
                 self._handle_decorator(obj, children)
