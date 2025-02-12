@@ -39,7 +39,7 @@ section_build_description_base = description_template.update(
                 Create **`ComponentConfig`** instances for each Streamlit 
                 component you need—this could be a native Streamlit 
                 function (like **`st.button`**) or a custom function 
-                (like **`st.segmented_control`** if it’s provided by your codebase).
+                (like **`st.segmented_control`** if it's provided by your codebase).
 
             2. **Configure the Page Layout**  
                 
