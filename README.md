@@ -8,6 +8,7 @@ A **declarative** and **modular** approach to building Streamlit applications. *
 - [Quick Start](#quick-start)
 - [Basic Usage](#basic-usage)
 - [Advanced Usage](#advanced-usage)
+- [Example Pages](#example-pages)
 - [License](#license)
 - [Contact & Contributing](#contact--contributing)
 
@@ -23,15 +24,14 @@ A **declarative** and **modular** approach to building Streamlit applications. *
 ## Installation
 
 ### From PyPI (Upcoming / Planned)
-We’re preparing to publish **Streamlit Configurator** on PyPI. Once available, you can simply install it with:
+Streamlit Configurator is available on PyPI. You can install it with:
 ```bash
 pip install st-configurator
 ```
-(Stay tuned for the official release.)
 
 ### From Source (Current)
 1. Clone or download this repository.
-2. Navigate to the project’s root directory.
+2. Navigate to the project's root directory.
 3. Install using pip:
     ```bash
     pip install .
@@ -85,10 +85,24 @@ PageRenderer().render_page(page_config)
 4. **Render:** Call **`PageRenderer().render_page(my_page_config)`** to display your page.
 
 ## Advanced Usage
-- **Conditional Rendering:** Add a **`condition`** to any **`ComponentConfig`** to selectively display or hide it based on a placeholder’s boolean value (or the returned value of another component).
+- **Conditional Rendering:** Add a **`condition`** to any **`ComponentConfig`** to selectively display or hide it based on a placeholder's boolean value (or the returned value of another component).
 - **Nested Layouts:** Use **`children`** in a **`ComponentConfig`** for layout containers like **`st.columns`** or **`st.tabs`**.
 - **Persistence:** If you need a placeholder to remain **locked** once it changes, set **`persist=True`**. The new value overrides the default permanently, ignoring subsequent resets.
 - **Global Scope:** Set **`global_scope=True`** for placeholders that are shared across **all** pages.
+
+## Example Pages
+A more detailed set of usage examples and component demonstrations can be found in the **[example/](example)** directory. To see them in action, run:
+```bash
+streamlit run example/main.py
+```
+You'll find multiple pages illustrating:
+
+- **Placeholder** usage
+- **Declarative** layout building
+- **Conditional** rendering
+- **Nested** containers and more
+
+Each page includes commentary and code samples demonstrating how to use **Streamlit Configurator's API**.
 
 ## License
 This project is licensed under the terms of the [LICENSE](LICENSE) file.
