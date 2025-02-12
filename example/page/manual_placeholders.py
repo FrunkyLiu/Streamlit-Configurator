@@ -24,93 +24,102 @@ description_config = description_template.update(
     args=(
         textwrap.dedent(
             """
-            Sometimes, you may need to add or update placeholders manually—without 
-            pre-defining all of them within your class. This flexibility allows 
-            you to dynamically configure and update placeholders as needed. 
-            Below are three methods to add a new placeholder value, along with 
-            how to update and retrieve the value.
-            ***
+            ### Overview
+            In certain cases, you may need to **create or update placeholders 
+            on the fly**, rather than pre-defining all of them in a class. 
+            This approach provides extra **flexibility**, allowing you to 
+            dynamically manage placeholder states. Below are three methods for 
+            adding a new placeholder value, as well as guidelines for updating 
+            and retrieving values.
+
+            ---
+
             ### Adding New Placeholder Values
-            Consider the following base definition:
+            Suppose you already have a class like:
             ```python
             class MyPlaceholder(Placeholder):
                 CHAT_INPUT = PlaceholderValue()
                 HISTORY_MESSAGES = PlaceholderValue()
             ```
-            Now, suppose you need to add a new placeholder for a numeric value. 
-            You can do this in three ways:
-            1. **Recommended:**
+            If you want to add a new placeholder (e.g., for a numeric value), 
+            you have three main options:
 
-                Create and assign a new placeholder with all parameters in one step.
+            1. **Recommended:** Assign a **`PlaceholderValue`** directly with 
+            
+                the desired parameters:
                 ```python
                 MyPlaceholder.NUMBER = PlaceholderValue(default=0)
-                # You can also include extra parameters:
+                # Optionally specify extra parameters in one step:
                 # MyPlaceholder.NUMBER = PlaceholderValue(default=0, persist=True, global_scope=True)
                 ```
-
+            
             2. **Direct Assignment:**
-
-                Simply assign a new value.
 
                 ```python
                 MyPlaceholder.NUMBER = 0
                 ```
-                Even when you directly assign a raw value like `0`, it is automatically 
-                converted into a `PlaceholderValue` object. This ensures that the 
-                new value still supports all the associated methods (such as `.set()` and `.get()`) 
-                and remains fully compatible with the st_configurator system.
+                Even when assigning a raw value like **`0`**, Streamlit Configurator 
+                automatically converts it into a **`PlaceholderValue`**. Thus you 
+                still benefit from methods like **`.get()`** and **`.set()`**.
+            
+            3. **Using `set_attr`:**
 
-            3. **Using set_attr:**
-
-                Use the `set_attr` method to assign a new placeholder value.
                 ```python
                 MyPlaceholder.set_attr("NUMBER", 0)
                 ```
+                This helper method also ensures that the assigned value becomes a 
+                **`PlaceholderValue`**.
 
-            The **recommended method** is the first one—`MyPlaceholder.NUMBER = 
-            PlaceholderValue(default=0)`—since it allows you to specify additional 
-            parameters (like `persist` and `global_scope`) in a single call.
-            ***
-            ### Updating and Retrieving Placeholder Values
-            Once a placeholder is set up, you can update its value and retrieve it when needed:
-            - **Update the Value:**
-            ```python
-            MyPlaceholder.NUMBER.set(2)
-            ```
-            - **Retrieve the Value:**
-            ```python
-            current_value = MyPlaceholder.NUMBER.get()
-            ```
-            ***
-            ### Why Use Manual Placeholder Setup?
-            Flexibility & Control:
-
-            - **Dynamic Configuration:**
-
-                Manually setting placeholders gives you the freedom to add or 
-                modify placeholders on the fly, which can be especially useful 
-                in dynamic applications where new state variables might be 
-                needed at runtime.
-
-            - **Enhanced Parameterization:**
-
-                By using the recommended method—creating a placeholder with a call like
-                `MyPlaceholder.NUMBER = PlaceholderValue(default=0, persist=True, global_scope=True)`
-                —you can bundle additional settings (such as persistence or global scope) 
-                with the default value. This makes your state management more robust, 
-                ensuring that even if Streamlit's built-in key-based mechanism fails 
-                to retain state across page switches, your placeholder will still 
-                hold the correct value.
+            The first method is preferred because it allows you to define all 
+            placeholder properties (like **`persist`** or **`global_scope`**) 
+            in a single, clear statement.
             
-            - **Improved Compatibility:**
+            ---
+            
+            ### Updating and Retrieving Placeholder Values
+            Once a placeholder exists on your class:
 
-                Manual manipulation of placeholders (for example, assigning a raw 
-                value directly or using helper methods like `set_attr`) lets you 
-                bridge the gap between native Streamlit coding and the declarative 
-                configuration approach of Streamlit-Configurator. This 
-                compatibility is crucial when the straightforward key-based 
-                approach might lead to lost or outdated state, especially 
-                during page transitions.
+            - **Update** its value:
+
+                ```python
+                MyPlaceholder.NUMBER.set(2)
+                ```
+            
+            - **Retrieve** its value:
+
+                ```python
+                current_value = MyPlaceholder.NUMBER.get()
+                ```
+            
+            This read/write mechanism ensures consistency and state 
+            persistence, even if the user navigates away or refreshes the page.
+
+            ---
+
+            ### Why Use Manual Placeholder Setup?
+            1. **Dynamic Configuration**
+                
+                You can add or modify placeholders at runtime, which can be 
+                crucial for apps that generate new state requirements based on 
+                user interactions or external data.
+
+            2. **Enhanced Parameterization**
+            
+                Passing parameters like **`persist=True`** or 
+                **`global_scope=True`** in a single assignment keeps 
+                configuration organized. This also helps ensure that state 
+                remains intact when switching pages, a common shortcoming of 
+                Streamlit’s default key-based system.
+
+            3. **Improved Compatibility**
+            
+                By manually manipulating placeholders (e.g., assigning a raw 
+                value that is auto-converted or using **`set_attr`**), you can 
+                seamlessly blend native Streamlit coding patterns with 
+                **Streamlit Configurator’s declarative** approach. This hybrid 
+                strategy is especially useful when keys alone risk losing 
+                state due to page transitions or complex refresh triggers.
+
             """
         ),
     )
