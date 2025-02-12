@@ -24,7 +24,7 @@ class MyPlaceholder(Placeholder):
 
 
 title = title_template.update(
-    args=("📦Containers & Nested Components with Children",),
+    args=("📦 Containers & Nested Components with Children",),
 )
 
 
@@ -32,68 +32,50 @@ section_build_description = description_template.update(
     args=(
         textwrap.dedent(
             """
-            Streamlit Configurator allows you to nest components using the children attribute. 
-            This mechanism isn’t limited to a single container type—it works with any container-like 
-            element (such as columns, containers, dialogs, etc.) and enables you to build complex, 
-            multi-row and multi-column layouts in a declarative fashion. Additionally, 
-            you can use `None` to intentionally leave a space empty.
-            > Note: While the examples below use `st.columns` to illustrate the children mechanism, 
-            the same approach applies to other container elements like `st.container` or custom dialogs.
+            **Streamlit Configurator** supports **nested children** primarily 
+            for **`st.columns`** and **`st.tabs`** (or other similar 
+            container-like Streamlit functions). You can place multiple 
+            **ComponentConfig** items within these containers by specifying 
+            them as nested lists in the **`children`** attribute. Additionally, 
+            you can insert **`None`** to intentionally leave a **column or tab** 
+            empty.  
 
-            
-            ### Multi-Row Layout with Nested Lists
-            Use nested lists within the children attribute to create layouts spanning multiple rows. 
-            Each inner list represents a row, and each element in that list represents a column (or child component) within that row.
+            > **Note**: While other elements (like **`st.container`**) might 
+            also work with children in some contexts, the **automated nesting** 
+            and **`None`** placeholders are primarily designed for 
+            **`st.columns`** and **`st.tabs`**.  
 
+            ---
+
+            ### Multi-Row Layout with Nested Lists (Columns)
+            When using **`st.columns`**, you can nest lists to create 
+            multi-row layouts. Each **inner list** represents a row, and each 
+            element in that list corresponds to **one column**.
             ```python
             import streamlit as st
             from st_configurator import ComponentConfig
 
-            # Define components for the layout
-            area_1 = ComponentConfig(
-                component=st.code,
-                args=("Area 1", None),
-            )
+            # Example components
+            area_1 = ComponentConfig(component=st.code, args=("Area 1", None))
+            area_2 = ComponentConfig(component=st.code, args=("Area 2", None))
+            area_3 = ComponentConfig(component=st.code, args=("Area 3", None))
+            area_4 = ComponentConfig(component=st.code, args=("Area 4", None))
+            area_5 = ComponentConfig(component=st.code, args=("Area 5", None))
+            area_6 = ComponentConfig(component=st.code, args=("Area 6", None))
 
-            area_2 = ComponentConfig(
-                component=st.code,
-                args=("Area 2", None),
-            )
-
-            area_3 = ComponentConfig(
-                component=st.code,
-                args=("Area 3", None),
-            )
-
-            area_4 = ComponentConfig(
-                component=st.code,
-                args=("Area 4", None),
-            )
-
-            area_5 = ComponentConfig(
-                component=st.code,
-                args=("Area 5", None),
-            )
-
-            area_6 = ComponentConfig(
-                component=st.code,
-                args=("Area 6", None),
-            )
-
-            # Create a multi-row layout using nested lists.
-            # Here, we use st.columns as an example of a container that supports children.
+            # Use st.columns as the container
             multi_row_layout = ComponentConfig(
                 component=st.columns,
-                args=(3,),  # 3 columns per row
+                args=(3,),  # 3 columns
                 kwargs={"vertical_alignment": "center"},
                 children=[
-                    # First row
-                    [area_1, area_2, area_3],
-                    # Second row
-                    [area_4, area_5, area_6],
+                    [area_1, area_2, area_3],  # First row
+                    [area_4, area_5, area_6],  # Second row
                 ],
             )
             ```
+            With this structure, Streamlit Configurator handles creating the 
+            columns and arranging components into rows.
             """
         ),
     ),
@@ -123,13 +105,12 @@ section_none_description = description_template.update(
     args=(
         textwrap.dedent(
             """
-            ### Skipping a Column
-            If you need to leave a space empty in your layout, simply insert `None` at that position in the children list. 
+            ### Skipping a Column (**`None`**)
+            To leave a column empty in either **`st.columns`** or **`st.tabs`**
+            , insert **`None`** into the **`children`** list at the desired 
+            position:
             
-
-            Example:
             ```python
-            # Layout with an intentionally empty middle column in the first row
             layout_with_gap = ComponentConfig(
                 component=st.columns,
                 args=(3,),
@@ -139,9 +120,10 @@ section_none_description = description_template.update(
                 ],
             )
             ```
-            In this example, the first row’s middle column is empty. 
-            Streamlit's `st.columns` will automatically adjust the layout by shifting the components accordingly.
-
+            Here, the **middle** column is intentionally left blank. This same 
+            logic also applies if you are creating tabs: you could specify 
+            **`None`** to skip a particular tab slot (though typically you’d 
+            just omit that tab entirely).
             """
         ),
     ),
@@ -214,12 +196,9 @@ section_dialog_description = description_template.update(
         textwrap.dedent(
             """
             ### Using Children with Decorator (e.g. @st.dialog)
-            The children mechanism can also be applied to decorators that wrap or enhance components. 
-            For instance, if you use a decorator such as `@st.dialog` (or a similar decorator) to create a dialog, 
-            you can declare its nested content using the same children approach.
-
-            This means you can define the content that should appear inside the dialog by including it in the `children` attribute of your `ComponentConfig`. 
-            This makes it easy to manage and reuse complex UI elements, even when they’re enhanced by decorators.
+            If you employ a container-like decorator (e.g., **`@st.dialog`**) 
+            that naturally supports children, you can declare those children 
+            in the same way:
 
             Example:
             ```python
