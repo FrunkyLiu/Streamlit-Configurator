@@ -6,7 +6,6 @@ A **declarative** and **modular** approach to building Streamlit applications. *
 - [Features](#features)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Project Structure](#project-structure)
 - [Basic Usage](#basic-usage)
 - [Advanced Usage](#advanced-usage)
 - [License](#license)
