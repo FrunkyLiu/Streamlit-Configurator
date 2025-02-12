@@ -35,7 +35,7 @@ description_config = description_template.update(
               - ##### ***render_layout(self, configs: Sequence[ComponentConfig | None]) -> None***
                 Renders a sequence of **component configurations**. It:
                 - Iterates through the **`configs`** list.
-                - Checks each component’s **condition** (if specified).
+                - Checks each component's **condition** (if specified).
                 - Processes **nested components** within layouts like columns or containers.
 
                 

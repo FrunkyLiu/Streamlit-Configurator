@@ -28,21 +28,43 @@ description_config = description_template.update(
     args=(
         textwrap.dedent(
             """
-            In this example, placeholders serve a dual purpose—they not only capture and store 
-            the resulting output but also provide default input values to components. 
-            This unified approach overcomes common issues with state persistence when using component keys, 
-            ensuring that user inputs remain intact even when switching pages.
-            ***
-            #### Example: Unified Input and Output with Placeholders
+            ### Overview 
+            In many Streamlit apps, **component keys** (**`key="something"`**) 
+            are used to preserve input values across re-runs. However, when 
+            you **switch pages** within a Streamlit app, these keys often reset
+            , causing inputs to revert to their **default** states. By using 
+            **placeholders**—in which each placeholder handles both the 
+            **initial value** and the **updated user input**—you can maintain 
+            values more reliably, even when navigating between pages.
+
+            ---
+
+            ### Dual Role of Placeholders
+            Placeholders (`PlaceholderValue`) serve a **twofold purpose**:
+            1. **Initial Value**: When passed as **`value`** to a component like 
+            **`st.text_input`** or **`st.slider`**, the placeholder provides the 
+            component's starting value.
+            2. **Result Capture**: By assigning the placeholder as 
+            **`result_key`**, any user updates are stored back into that same 
+            placeholder—overriding the initial default.
+
+            This approach neatly **avoids** the need for separate keys and 
+            manual synchronization with **`st.session_state`**.
+
+            ---
+
+            ### Example Usage
+            Below is a simplified illustration of how placeholders can unify input and output:
+
             ```python
             import streamlit as st
             from st_configurator import ComponentConfig, PageConfig, PageRenderer
             from st_configurator.placeholder import Placeholder, PlaceholderValue
 
-            # Define placeholders with default values.
+            # 1. Define placeholders with defaults.
             class MyPlaceholder(Placeholder):
-                NAME = PlaceholderValue()
-                AGE = PlaceholderValue()
+                NAME = PlaceholderValue(default="")
+                AGE = PlaceholderValue(default=18)
                 GENDER = PlaceholderValue(default="Others")
                 GENDER_INDEX = PlaceholderValue(default=None)
 
@@ -53,31 +75,28 @@ description_config = description_template.update(
                     return gender_options.index(value)
                 return None
 
-            # Configure a text input component.
-            # The placeholder provides both the initial value and records user input.
+            # 2. Configure components to both read & write from the same placeholder.
             name_input_config = ComponentConfig(
                 component=st.text_input,
                 args=("What is your name?",),
                 kwargs={
-                    "value": MyPlaceholder.NAME(default=""),
+                    "value": MyPlaceholder.NAME,
                     "placeholder": "Enter your name here...",
                 },
                 result_key=MyPlaceholder.NAME,
             )
 
-            # Configure a slider component for AGE.
             age_slider_config = ComponentConfig(
                 component=st.slider,
                 args=("How old are you?",),
                 kwargs={
                     "min_value": 0,
                     "max_value": 100,
-                    "value": MyPlaceholder.AGE(default=18),
+                    "value": MyPlaceholder.AGE,
                 },
                 result_key=MyPlaceholder.AGE,
             )
 
-            # Configure a selectbox component for gender selection.
             gender_selectbox_config = ComponentConfig(
                 component=st.selectbox,
                 args=("What is your gender?", gender_options),
@@ -85,16 +104,15 @@ description_config = description_template.update(
                 result_key=MyPlaceholder.GENDER,
             )
 
-            # Convert the selected gender into an index.
             gender_converter_config = ComponentConfig(
                 component=str2index,
                 args=(MyPlaceholder.GENDER,),
                 result_key=MyPlaceholder.GENDER_INDEX,
             )
 
-            # Define the page configuration with all the components.
+            # 3. Assemble the page.
             page_config = PageConfig(
-                page_tag="User Information",
+                page_tag="Unified Input and Output with Placeholders",
                 body=[
                     name_input_config,
                     age_slider_config,
@@ -105,11 +123,17 @@ description_config = description_template.update(
 
             PageRenderer().render_page(page_config)
             ```
-            #### Demo:
-            Try configuring this page: Set your values using the inputs provided, 
-            switch to another page via sidebar, and then return. 
-            You'll see that the values you entered remain intact—only the components 
-            on this page use this advanced placeholder mechanism, ensuring that your user data is preserved.
+            In this setup:
+
+            - **`MyPlaceholder.NAME`** is provided as both the default value 
+            (**`kwargs["value"]`**) and the destination for user input 
+            (**`result_key`**).
+            - The same logic applies to **`AGE`**, **`GENDER`**, and 
+            **`GENDER_INDEX`**.
+            
+            As a result, you can **navigate away** from the page and return 
+            later to find the user's inputs still populated—no extra session 
+            state handling is needed.
             """
         ),
     ),
@@ -181,35 +205,24 @@ secoond_description_config = description_template.update(
     args=(
         textwrap.dedent(
             """
-            ### How It Works
-            - **Dual Role of Placeholders:**
+            ### Avoiding Timing Issues
+            A common pitfall when manually managing **`st.session_state`** is 
+            timing. If the user interacts with a slider or text input, then 
+            rapidly triggers a page refresh, the new value might not be 
+            captured before the old value is restored. Here's a minimal 
+            example of where timing problems can occur:
 
-                In the above example, the same placeholder (e.g., `MyPlaceholder.NAME`) is 
-                used to provide the initial value for a component and to capture the user's 
-                input. This eliminates the need to manage separate keys for state and ensures 
-                that values persist even when the page is reloaded or navigated away from.
-
-            - **Avoiding State Loss:**
-
-                Typically, Streamlit components use keys (e.g., `key="name"`) to store 
-                values in `st.session_state`. However, when switching pages via a sidebar, 
-                these values may reset to their defaults. With placeholders, the internal 
-                mechanism preserves state reliably across page changes.
-
-            - **Handling Timing Issues:**
-
-                Manual state management can lead to timing problems (e.g., a slider 
-                reverting to an old value due to page refreshes before the new value is saved). 
-                By integrating default values and result recording within the placeholder, 
-                these issues are avoided.
-            
-            ##### Timing issue example:
             ```python
             if 'my_age' not in st.session_state:
                 st.session_state['my_age'] = 18
-            st.slider("How old are you?", min_value=0, max_value=100, value=st.session_state['my_age'], key="age")
+            st.slider("How old are you?", 0, 100, value=st.session_state['my_age'], key="age")
             st.session_state['my_age'] = st.session_state.get('age', 18)
             ```
+            If the user changes the slider value **twice in quick** succession, 
+            Streamlit could re-run and revert to an earlier state. By using 
+            placeholders for both **default input** and **updated output**, you avoid 
+            these conflicts because the placeholder is consistently 
+            responsible for storing—and retrieving—the latest value.
             ##### Timing issue demo:
             Please drag the slider at least twice.
             """
@@ -240,15 +253,18 @@ third_description_config = description_template.update(
             ### Benefits
             - **Unified Input/Output:**
             
-                A single placeholder instance manages both the initial value and the user-provided updates, streamlining your code.
+                A single placeholder instance handles both the initial value 
+                and any user updates, reducing complexity.
 
             - **Enhanced State Persistence:**
             
-                Values remain consistent even when users navigate away and return, improving the user experience.
+                User inputs are preserved across page switches—no separate key 
+                management required.
 
-            - **Reduced Manual State Management:**
+            - **Cleaner Code:**
 
-                The placeholder mechanism abstracts away the complexities of managing st.session_state manually, reducing potential bugs.
+                Automatic synchronization via placeholders eliminates extra 
+                session-state checks and minimizes potential timing bugs.
 
 
             """

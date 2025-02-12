@@ -98,7 +98,7 @@ description_config = description_template.update(
                 `MyPlaceholder.NUMBER = PlaceholderValue(default=0, persist=True, global_scope=True)`
                 —you can bundle additional settings (such as persistence or global scope) 
                 with the default value. This makes your state management more robust, 
-                ensuring that even if Streamlit’s built-in key-based mechanism fails 
+                ensuring that even if Streamlit's built-in key-based mechanism fails 
                 to retain state across page switches, your placeholder will still 
                 hold the correct value.
             

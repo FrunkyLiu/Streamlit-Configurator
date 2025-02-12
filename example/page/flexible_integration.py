@@ -258,7 +258,7 @@ second_description_config = description_template.update(
 
             - **Choose What Fits:**
             
-                Depending on your project’s complexity and your preference for 
+                Depending on your project's complexity and your preference for 
                 declarative versus imperative styles, you can opt for a fully 
                 configurator-based solution or integrate custom functions for 
                 a more intuitive development experience.

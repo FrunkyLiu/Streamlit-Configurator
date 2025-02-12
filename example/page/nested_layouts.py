@@ -122,7 +122,7 @@ section_none_description = description_template.update(
             ```
             Here, the **middle** column is intentionally left blank. This same 
             logic also applies if you are creating tabs: you could specify 
-            **`None`** to skip a particular tab slot (though typically you’d 
+            **`None`** to skip a particular tab slot (though typically you'd 
             just omit that tab entirely).
             """
         ),
