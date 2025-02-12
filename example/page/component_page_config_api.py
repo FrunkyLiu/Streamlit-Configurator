@@ -20,25 +20,37 @@ description_config = description_template.update(
         textwrap.dedent(
             """
             **Overview:**
-            These data classes allow you to declaratively define your UI components and overall page layout.
+            These data classes let you **declaratively** define your UI components and page layout in **Streamlit-Configurator**.
 
             ***
             ### ComponentConfig
             
             - ##### **Description:**
-            
-                Describes a single UI component's configuration, including the 
-                component callable, arguments, nested children, condition for 
-                rendering, and output storage.
+
+                Represents a single UI component's configuration, including:
+                - Which Streamlit or custom function to call (**`component`**)
+                - Any positional (**`args`**) or keyword (**`kwargs`**) parameters it needs
+                - A conditional rule (**`condition`**) to decide if the component is rendered
+                - Nested child components (**`children`**)
+                - An optional placeholder (**`result_key`**) to store the component's output
             
             - #### **Attributes:**
+                - **`component: Callable`** 
 
-                - **`component: Callable`** — The Streamlit component or custom function.
-                - **`args: Tuple[Union[PlaceholderValue, Any], ...]`** — Positional arguments for the component.
-                - **`kwargs: Dict[str, Union[PlaceholderValue, Any]]`** — Keyword arguments for the component.
-                - **`children: Optional[...]`** — Nested component configurations (supports flat or nested lists).
-                - **`condition: Optional[Union[PlaceholderValue, ComponentConfig]]`** — A condition controlling rendering.
-                - **`result_key: Optional[PlaceholderValue]`** — A placeholder for capturing the component's
+                    The Streamlit component (e.g., `st.button`, `st.text_input`) or a custom callable.
+                - **`args: Tuple[Union[PlaceholderValue, Any], ...]`**  
+
+                    Positional arguments passed to the component.
+                - **`kwargs: Dict[str, Union[PlaceholderValue, Any]]`**  
+                    Keyword arguments passed to the component. Merged with existing `kwargs` if updated.
+                - **`children: Optional[Sequence[Union[ComponentConfig, Sequence[Optional[ComponentConfig]], None]]]`**  
+                    A list (or nested lists) of other `ComponentConfig` instances. Allows for complex, nested layouts.
+                - **`condition: Optional[Union[PlaceholderValue, ComponentConfig]]`**  
+                    A condition controlling whether the component is rendered:
+                  - If it's a `PlaceholderValue`, its boolean interpretation determines rendering.
+                  - If it's another `ComponentConfig`, the returned value from that config is interpreted as a boolean.
+                - **`result_key: Optional[PlaceholderValue]`**  
+                    A placeholder to store the component's return value (if the component produces one).
 
             - #### **Key Methods:**
 
@@ -46,14 +58,14 @@ description_config = description_template.update(
 
                 ###### Parameters:
 
-                - **`args`**: Optional tuple to replace current positional arguments.
-                - **`kwargs`**: Optional dictionary to ***merge*** with or replace current keyword arguments.
-                - **`children`**: Optional list to replace current children configurations.
-                - **`condition`**: Optional replacement for the current condition.
-                - **`result_key`**: Optional new result placeholder.
+                  - **`args`**: A new tuple to replace the current `args`.
+                  - **`kwargs`**: A dictionary merged into the current `kwargs`, overwriting any conflicting keys.
+                  - **`children`**: A new list (or nested lists) to replace the current `children`.
+                  - **`condition`**: A new condition to replace the current one.
+                  - **`result_key`**: A new placeholder for capturing the component's return value.
 
                 ###### Return:
-                  - A new ComponentConfig instance with the updated parameters.
+                  - A **new** **`ComponentConfig`** instance with the specified updates.
                 
             #### Example:
             ```python
@@ -68,31 +80,41 @@ description_config = description_template.update(
             )
 
             # Update the configuration to modify the placeholder text.
-            updated_name_input_config = name_input_config.update(kwargs={"placeholder": "Your full name"})
+            updated_name_input_config = name_input_config.update(
+                kwargs={"placeholder": "Your full name"}
+            )
             ```
-            ***
+            
+            ---
 
             ### PageConfig
             
             - ##### **Description:**
             
-                Defines the overall page layout with a unique page tag, main body components, and an optional sidebar.
+                **`PageConfig`** defines the overall page structure with a **unique page tag**, 
+                a list of **body** components, and an optional list of **sidebar** components.
 
             - #### **Attributes:**
 
-                - **`page_tag: str`** — A unique identifier for the page.
-                - **`body: List[ComponentConfig]`** — A list of configurations for the main content.
-                - **`sidebar: Optional[List[ComponentConfig]]`** — A list of configurations for the sidebar (optional).
+                - **`page_tag: str`** 
+
+                    A unique identifier for the page (also used as a prefix for placeholders if not in global scope).
+                - **`body: List[ComponentConfig]`** 
+
+                    A list of **`ComponentConfig`** objects representing the main body content.
+                - **`sidebar: Optional[List[ComponentConfig]]`** 
+                
+                    A list of **`ComponentConfig`** objects for the page's sidebar. This field is optional.
     
             #### Example:
             ```python
             from st_configurator import PageConfig
 
-            # Create a simple page configuration.
+            # Using the previously defined configs.
             page_config = PageConfig(
                 page_tag="HomePage",
-                body=[name_input_config],   # Main content components
-                sidebar=[updated_name_input_config] # Sidebar components
+                body=[name_input_config],             # Main content
+                sidebar=[updated_name_input_config]   # Sidebar content
             )
             ``` 
             """
