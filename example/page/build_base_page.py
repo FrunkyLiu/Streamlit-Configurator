@@ -17,36 +17,42 @@ from share_component import (
 from st_configurator import ComponentConfig, PageConfig, PageRenderer
 
 section_build = title_template.update(
-    args=("🔧Building a Basic Streamlit Page with Streamlit Configurator",),
+    args=("🔧 Building a Basic Streamlit Page with Streamlit Configurator",),
 )
 
 section_build_description_base = description_template.update(
     args=(
         textwrap.dedent(
             """
-            Streamlit Configurator is a powerful tool that allows you to define and manage Streamlit UI elements in a declarative way. 
-            Instead of manually structuring Streamlit components,
-            you can use **`ComponentConfig`**, **`PageConfig`**, and **`PageRenderer`** to simplify page construction.
+            **Streamlit Configurator** provides a **declarative** way to define and manage UI elements in Streamlit.  
+            Instead of manually structuring Streamlit components using **imperative code**, you can use:
+            
+            - **`ComponentConfig`** to define UI elements.
+            - **`PageConfig`** to structure the layout.
+            - **`PageRenderer`** to render the page efficiently.
 
-            ### 📌 Steps to Build a Streamlit App with Configurator
-            Follow these steps to build a basic Streamlit application using Streamlit Configurator:
-            1. **Define UI Elements**
+            This approach enhances **modularity, maintainability, and reusability** in Streamlit applications.
             
-                Use **`ComponentConfig`** to create and configure Streamlit components (e.g., buttons, inputs, segmented controls).
+            ---
             
-            2. **Configure the Page Layout**
-            
-                Use **`PageConfig`** to define the structure of the page, including 
-                the **`page_tag`**, **`body`**, and **`sidebar`**. The **`sidebar`** parameter works 
-                similarly to **`body`**, but its components are rendered in **`st.sidebar`**.
-            
-            3. **Render the Page**
-                
-                Use **`PageRenderer`** to render the configured components into a working Streamlit app.
+            1. **Define UI Elements**  
+            Use **`ComponentConfig`** to create and configure Streamlit components such as buttons, inputs, and segmented controls.
 
-            ###### 📝 Example Code
+            2. **Configure the Page Layout**  
+            Use **`PageConfig`** to define the page structure, including:
+                - **`page_tag`**: A unique identifier for the page.
+                - **`body`**: The main page content (list of `ComponentConfig` instances).
+                - **`sidebar`**: Components rendered inside `st.sidebar`.
 
-            Here is an example of how to create a simple Streamlit app with a **segmented control**:
+            3. **Render the Page**  
+            Use **`PageRenderer`** to render the page based on the defined configurations.
+            
+            ---
+
+            ### 📝 Example: Creating a Simple Streamlit Page  
+
+            The following example demonstrates how to **build a page** using a 
+            **segmented control** inside the main content area and a **sidebar message**.
 
             ```python
             import streamlit as st
@@ -55,7 +61,7 @@ section_build_description_base = description_template.update(
             # Define a Streamlit UI element for the main content using ComponentConfig
             segmented_control = ComponentConfig(
                 component=st.segmented_control,
-                args=("Directions", ["Option 1", "Option 2", "Option 3"]),
+                args=("Options", ["Option 1", "Option 2", "Option 3"]),
                 kwargs={"selection_mode": "multi"}
             )
 
@@ -75,26 +81,30 @@ section_build_description_base = description_template.update(
             # Render the configured page
             PageRenderer().render_page(page_config)
             ```
-            #### Parameter Explanations:
+
+            ---
+
+            #### 🔍 Explanation of Parameters
             - **`component`**
 
-                Accepts any callable object—this can be a native Streamlit element or a custom function.
+                Accepts any callable object (e.g., a native Streamlit element like **`st.button`** or a custom function).
             
             - **`args`** & **`kwargs `**
                 
-                Used to pass positional and keyword parameters to the callable.
+                Used to pass positional and keyword arguments to the component.
             
             - **`page_tag`**
 
-                A unique identifier for the page, which can help differentiate pages and scope placeholder values.
+                A unique identifier for the page, which helps manage scoped 
+                placeholder values and avoids key conflicts.
             
             - **`body`**
             
-                A list of **`ComponentConfig`** instances that are rendered in order to create the main content of the page.
-            
+                A list of **`ComponentConfig`** instances defining the main content of the page.
+        
             - **`sidebar`**
 
-                A list of **`ComponentConfig`** instances rendered within **`st.sidebar`**.
+                A list of **`ComponentConfig`** instances rendered inside **`st.sidebar`**.
             """
         ),
     ),
