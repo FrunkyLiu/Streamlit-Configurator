@@ -43,31 +43,33 @@ pip install st-configurator
 
 ## Quick Start
 Below is a minimal example showing how to set up a page with **Streamlit Configurator**.
-    ```python
-    import streamlit as st
-    from st_configurator import ComponentConfig, PageConfig, PageRenderer
-    from st_configurator.placeholder import Placeholder, PlaceholderValue
+    
+```python
+import streamlit as st
+from st_configurator import ComponentConfig, PageConfig, PageRenderer
+from st_configurator.placeholder import Placeholder, PlaceholderValue
 
-    # 1. Define a custom placeholder class to hold your state
-    class MyPlaceholder(Placeholder):
-        NAME = PlaceholderValue(default="Guest")
+# 1. Define a custom placeholder class to hold your state
+class MyPlaceholder(Placeholder):
+    NAME = PlaceholderValue(default="Guest")
 
-    # 2. Create a Streamlit component config (e.g., a text input)
-    name_input_config = ComponentConfig(
-        component=st.text_input,
-        args=("What's your name?",),
-        kwargs={"value": MyPlaceholder.NAME},
-        result_key=MyPlaceholder.NAME
-    )
+# 2. Create a Streamlit component config (e.g., a text input)
+name_input_config = ComponentConfig(
+    component=st.text_input,
+    args=("What's your name?",),
+    kwargs={"value": MyPlaceholder.NAME},
+    result_key=MyPlaceholder.NAME
+)
 
-    # 3. Define a page config that includes this component
-    page_config = PageConfig(
-        page_tag="HomePage",
-        body=[name_input_config]
-    )
+# 3. Define a page config that includes this component
+page_config = PageConfig(
+    page_tag="HomePage",
+    body=[name_input_config]
+)
 
-    # 4. Render the page
-    PageRenderer().render_page(page_config)
+# 4. Render the page
+PageRenderer().render_page(page_config)
+```
 
 1. Run your script with:
     ```bash
