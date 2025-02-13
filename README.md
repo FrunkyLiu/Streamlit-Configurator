@@ -91,10 +91,17 @@ PageRenderer().render_page(page_config)
 - **Global Scope:** Set **`global_scope=True`** for placeholders that are shared across **all** pages.
 
 ## Example Pages
-A more detailed set of usage examples and component demonstrations can be found in the **[example/](example)** directory. To see them in action, run:
-```bash
-streamlit run example/main.py
-```
+
+Explore detailed usage examples and component demonstrations through one of the following methods:
+
+1. **Visit the live demo**:  
+   👉 [Streamlit Configurator Demo](https://st-configurator.streamlit.app/)  
+
+2. **Run locally**:  
+   Clone the repository and execute the example app:
+    ```bash
+    streamlit run example/main.py
+    ```
 You'll find multiple pages illustrating:
 
 - **Placeholder** usage
