@@ -78,7 +78,7 @@ description_config = description_template.update(
                 print("Resolved Value:", result)  # Expected: 10
                 ```
 
-              - #### ***Placeholder.set_attr(name, value) -> None***
+              - #### ***set_attr(name, value) -> None***
 
                 ###### Parameters:
 

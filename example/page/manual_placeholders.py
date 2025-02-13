@@ -109,14 +109,14 @@ description_config = description_template.update(
                 **`global_scope=True`** in a single assignment keeps 
                 configuration organized. This also helps ensure that state 
                 remains intact when switching pages, a common shortcoming of 
-                Streamlit’s default key-based system.
+                Streamlit's default key-based system.
 
             3. **Improved Compatibility**
             
                 By manually manipulating placeholders (e.g., assigning a raw 
                 value that is auto-converted or using **`set_attr`**), you can 
                 seamlessly blend native Streamlit coding patterns with 
-                **Streamlit Configurator’s declarative** approach. This hybrid 
+                **Streamlit Configurator's declarative** approach. This hybrid 
                 strategy is especially useful when keys alone risk losing 
                 state due to page transitions or complex refresh triggers.
 

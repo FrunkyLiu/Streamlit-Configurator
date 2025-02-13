@@ -117,6 +117,36 @@ description_config = description_template.update(
                 sidebar=[updated_name_input_config]   # Sidebar content
             )
             ``` 
+
+            ---
+
+            ### Note on Using Streamlit's key Parameter
+
+            When you include a **`key`** in a Streamlit component's 
+            **`kwargs`**, and you also set a **`result_key`** 
+            (a **`PlaceholderValue`**) in the same **`ComponentConfig`**, the 
+            explicit **`key`** takes precedence. This means:
+
+            - The **placeholder** still stores the returned value.
+
+            - However, the component's **internal Streamlit key** becomes the 
+            user-specified **`key`**, **not the default** **`<page_tag>_
+            <placeholder_name>`** or **`_GLOBAL_<placeholder_name>`.**
+
+            ```python
+            button_config = ComponentConfig(
+                component=st.button,
+                args=("Click Me",),
+                kwargs={
+                    "key": "my_unique_streamlit_key"  # This key overrides the placeholder's default naming
+                },
+                result_key=MyPlaceholder.SOME_BUTTON_STATE,
+            )
+            ```
+            If you omit the **`key`** in **`kwargs`**, **Streamlit 
+            Configurator** automatically uses the placeholder's generated key 
+            (**`<page_tag>_<placeholder_name>`** or 
+            **`_GLOBAL_<placeholder_name>`** if global_scope=True).
             """
         ),
         True,
