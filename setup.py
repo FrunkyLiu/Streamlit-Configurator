@@ -10,7 +10,7 @@ except FileNotFoundError:
 
 setup(
     name="st-configurator",
-    version="0.1.0",
+    version="0.1.0b1",
     author="Frunky Liu",
     author_email="x77497856@gmail.com",
     description="A declarative and modular approach to building Streamlit apps",
@@ -29,7 +29,7 @@ setup(
     },
     # Additional metadata fields
     classifiers=[
-        "Development Status :: 3 - Beta",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "License :: OSI Approved :: MIT License",
