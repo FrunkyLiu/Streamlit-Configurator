@@ -1,4 +1,9 @@
 import streamlit as st
+try:
+    import st_configurator
+except ImportError:
+    import sys
+    sys.path.append("../")
 
 st.set_page_config(page_title="Streamlit Configurator")
 
